@@ -3,10 +3,9 @@ package org.kaa.algorithms.sorting;
 import static org.kaa.utils.ArrayUtils.print;
 import static org.kaa.utils.ArrayUtils.swap;
 
-public class QuickSort {
-
+public class QuickSortHoare {
   public static void main(String[] args) {
-    int[] array = new int[]{2,4,6,7,3,5,9,19,55,34,23,21,3,1};
+    int[] array = new int[]{13, 19, 9, 5, 12, 8, 7, 4, 11, 2, 6, 21};
     print(array);
     sort(array);
     print(array);
@@ -18,23 +17,29 @@ public class QuickSort {
 
   private static void doSort(int[] array, int start, int end){
     if(start < end){
-      int q = partition(array, start,end);
+      int q = hoarePartition(array, start,end);
       doSort(array, start, q - 1);
       doSort(array, q + 1, end);
     }
   }
 
-  static int partition(int[] array, int start, int end){
-    int pivot = array[end];
+  static int hoarePartition(int[] array, int start, int end){
+    int pivot = array[start];
     int i = start - 1;
-    for(int j = start; j <= end - 1; j++){
-      if(array[j] <= pivot){
-        i = i + 1;
+    int j = end + 1;
+    while(true) {
+      do {
+        j--;
+      } while(array[j] > pivot);
+      do {
+        i++;
+      } while(array[i] < pivot);
+      if(i < j) {
         swap(array, i, j);
+      } else {
+        return j;
       }
     }
-    swap(array, i + 1, end);
-    return i + 1;
   }
 
 }

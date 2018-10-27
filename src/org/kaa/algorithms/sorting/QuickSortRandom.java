@@ -1,6 +1,7 @@
 package org.kaa.algorithms.sorting;
 
 import static org.kaa.utils.ArrayUtils.print;
+import static org.kaa.utils.ArrayUtils.swap;
 
 public class QuickSortRandom {
 
@@ -44,12 +45,6 @@ public class QuickSortRandom {
     }
     swap(array, i + 1, end);
     return i + 1;
-  }
-
-  static void swap(int[] array, int i, int j){
-    int temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
   }
 
 }

@@ -19,24 +19,55 @@ public class BinaryTree<T> {
     this.root = root;
   }
 
-  public void insert(Node<T> node){
-    Node<T> current = root;
+  public void insert(BinaryTree<T> tree, Node<T> node){
+    Node<T> current = tree.root;
     Node<T> parent = null ;
     while(current != null){
       parent = current;
-      if(node.getKey() > current.getKey()){
-        current = current.getRight();
+      if(node.key > current.key){
+        current = current.right;
       } else {
-        current = current.getLeft();
+        current = current.left;
       }
     }
-    node.setParent(parent);
+    node.parent = parent;
     if(current == null){
-      root = node;
-    } else if(node.getKey() > parent.getKey()){
-      parent.setRight(node);
+      tree.root = node;
+    } else if(node.key > parent.key){
+      parent.right = node;
     } else {
-      parent.setLeft(node);
+      parent.left = node;
+    }
+  }
+
+  public void delete(BinaryTree<T> tree, Node<T> node){
+    if(node.left == null){
+      transplant(tree, node, node.right);
+    } else if(node.right == null) {
+      transplant(tree, node, node.left);
+    } else {
+      Node<T> min = minimum(node.right);
+      if(min.parent != node){
+        transplant(tree, min, min.right);
+        min.right = node.right;
+        min.right.parent = min;
+      }
+      transplant(tree, node, min);
+      min.left = node.left;
+      min.left.parent = min;
+    }
+  }
+
+  public void transplant(BinaryTree<T> tree, Node<T> deleted, Node<T> added){
+    if(deleted.parent == null){
+      tree.root = added;
+    } else if(deleted == deleted.parent.left){
+      deleted.parent.left = added;
+    } else {
+      deleted.parent.right = added;
+    }
+    if(added != null){
+      added.parent = deleted.parent;
     }
   }
 
@@ -45,13 +76,13 @@ public class BinaryTree<T> {
   }
 
   private Node<T> search(Node<T> node, int key){
-    if(node == null || node.getKey() == key) {
+    if(node == null || node.key == key) {
       return node;
     }
-    if(node.getKey() > key) {
-      return search(node.getLeft(), key);
+    if(node.key > key) {
+      return search(node.left, key);
     } else {
-      return search(node.getRight(), key);
+      return search(node.right, key);
     }
   }
 
@@ -60,11 +91,11 @@ public class BinaryTree<T> {
   }
 
   private Node<T> searchIterative(Node<T> node, int key) {
-    while(node != null || node.getKey() != key) {
-      if(node.getKey() > key){
-        node = node.getLeft();
+    while(node != null || node.key != key) {
+      if(node.key > key){
+        node = node.left;
       } else {
-        node = node.getRight();
+        node = node.right;
       }
     }
     return node;
@@ -75,8 +106,8 @@ public class BinaryTree<T> {
   }
 
   private Node<T> minimum(Node<T> node){
-    while(node.getLeft() != null){
-      node = node.getLeft();
+    while(node.left != null){
+      node = node.left;
     }
     return node;
   }
@@ -86,8 +117,8 @@ public class BinaryTree<T> {
   }
 
   private Node<T> maximum(Node<T> node){
-    while(node.getRight() != null){
-      node = node.getRight();
+    while(node.right != null){
+      node = node.right;
     }
     return node;
   }
@@ -98,8 +129,8 @@ public class BinaryTree<T> {
   }
 
   private Node<T> maximumRecursive(Node<T> node) {
-    if(node.getRight() != null){
-      return maximumRecursive(node.getRight());
+    if(node.right != null){
+      return maximumRecursive(node.right);
     }
     return node;
   }
@@ -110,42 +141,42 @@ public class BinaryTree<T> {
   }
 
   private Node<T> minimumRecursive(Node<T> node) {
-    if(node.getLeft() != null){
-      return minimumRecursive(node.getLeft());
+    if(node.left != null){
+      return minimumRecursive(node.left);
     }
     return node;
   }
 
   Node<T> successor(Node<T> node){
-    if(node.getRight() != null){
-      return minimum(node.getRight());
+    if(node.right != null){
+      return minimum(node.right);
     }
-    Node<T> parent = node.getParent();
-    while(parent != null && node == parent.getRight()) {
+    Node<T> parent = node.parent;
+    while(parent != null && node == parent.right) {
       node = parent;
-      parent = node.getParent();
+      parent = node.parent;
     }
     return parent;
   }
 
   Node<T> predecessor(Node<T> node){
-    if(node.getLeft() != null){
-      return maximum(node.getLeft());
+    if(node.left != null){
+      return maximum(node.left);
     }
-    Node<T> parent = node.getParent();
-    while(parent != null && node == parent.getLeft()) {// todo check it
+    Node<T> parent = node.parent;
+    while(parent != null && node == parent.left) {// todo check it
       node = parent;
-      parent = node.getParent();
+      parent = node.parent;
     }
     return parent;
   }
 
   class Node<T>{
-    private Node<T> parent;
-    private Node<T> left;
-    private Node<T> right;
-    private T value;
-    private int key;
+    Node<T> parent;
+    Node<T> left;
+    Node<T> right;
+    T value;
+    int key;
 
     public Node(T value, int key) {
       this.value = value;
@@ -160,45 +191,6 @@ public class BinaryTree<T> {
       this.key = key;
     }
 
-    public Node<T> getParent() {
-      return parent;
-    }
-
-    public void setParent(Node<T> parent) {
-      this.parent = parent;
-    }
-
-    public Node<T> getLeft() {
-      return left;
-    }
-
-    public void setLeft(Node<T> left) {
-      this.left = left;
-    }
-
-    public Node<T> getRight() {
-      return right;
-    }
-
-    public void setRight(Node<T> right) {
-      this.right = right;
-    }
-
-    public T getValue() {
-      return value;
-    }
-
-    public void setValue(T value) {
-      this.value = value;
-    }
-
-    public int getKey() {
-      return key;
-    }
-
-    public void setKey(int key) {
-      this.key = key;
-    }
   }
 }
 

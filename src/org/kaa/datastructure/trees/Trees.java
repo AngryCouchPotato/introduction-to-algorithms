@@ -11,9 +11,9 @@ public class Trees {
 
   private static <T> void inOrderTreeWalk(Node node){
     if(node != null){
-      inOrderTreeWalk(node.getLeft());
-      System.out.println(node.getKey());
-      inOrderTreeWalk(node.getRight());
+      inOrderTreeWalk(node.left);
+      System.out.println(node.key);
+      inOrderTreeWalk(node.right);
     }
   }
 }

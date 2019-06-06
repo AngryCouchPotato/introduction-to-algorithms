@@ -1,4 +1,4 @@
-package org.kaa.algorithms.sorting;
+package org.kaa.algorithms.sorting.quicksort;
 
 public interface Sortable {
   void sort(int[] array);

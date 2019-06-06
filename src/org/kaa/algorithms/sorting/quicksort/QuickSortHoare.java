@@ -1,7 +1,5 @@
 package org.kaa.algorithms.sorting.quicksort;
 
-import org.kaa.algorithms.sorting.Sortable;
-
 import static org.kaa.utils.ArrayUtils.print;
 import static org.kaa.utils.ArrayUtils.swap;
 

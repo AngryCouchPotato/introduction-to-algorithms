@@ -1,4 +1,4 @@
-package org.kaa.algorithms;
+package org.kaa.algorithms.sorting.elementary;
 
 
 import static org.kaa.utils.ArrayUtils.print;

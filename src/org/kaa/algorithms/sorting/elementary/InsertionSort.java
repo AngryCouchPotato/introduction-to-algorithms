@@ -1,6 +1,8 @@
 package org.kaa.algorithms.sorting.elementary;
 
 
+import org.kaa.utils.ArrayUtils;
+
 import static org.kaa.utils.ArrayUtils.print;
 
 public class InsertionSort {
@@ -36,6 +38,26 @@ public class InsertionSort {
       }
       array[j + 1] = current;
     }
+  }
+
+  public static void sort(String[] a, int lo, int hi, int d) {
+    // Sort from a[lo] to a[hi], starting at the dth character.
+    for (int i = lo; i <= hi; i++) {
+      for (int j = i; j > lo && less(a[j], a[j - 1], d); j--) {
+        ArrayUtils.swap(a, j, j - 1);
+      }
+    }
+  }
+
+  private static boolean less(String v, String w, int d) {
+    for (int i = d; i < Math.min(v.length(), w.length()); i++) {
+      if (v.charAt(i) < w.charAt(i)) {
+        return true;
+      } else if (v.charAt(i) > w.charAt(i)) {
+        return false;
+      }
+    }
+    return v.length() < w.length();
   }
 
   /*
